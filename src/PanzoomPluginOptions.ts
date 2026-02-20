@@ -102,4 +102,18 @@ export type PanZoomPluginOptions = PanzoomOptions & {
    * default: false
    */
   restrictZoomOutBeyondOrigin?: boolean;
+
+  /**
+   * Expand feature options. When enabled, an expand button is added to the toolbar.
+   * Clicking it hides the sidebar and TOC column and expands the main content area
+   * to near-full-width so the original panzoom element fills the available space.
+   */
+  expand?: {
+    /**
+     * Whether to show the expand button in the toolbar.
+     *
+     * default: false
+     */
+    enabled?: boolean;
+  };
 };

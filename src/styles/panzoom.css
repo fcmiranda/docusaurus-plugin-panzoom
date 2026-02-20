@@ -46,3 +46,75 @@
   justify-content: center;
   align-items: center;
 }
+
+/* ── Expand feature ──────────────────────────────────────────────────────── */
+
+/*
+ * Active state on the panzoom wrapper so consumers can hook into it if needed.
+ */
+.panzoom-expand-active {
+  position: relative;
+}
+
+/*
+ * All layout overrides are scoped to @media (min-width: 997px) — the single
+ * breakpoint where Docusaurus activates the sidebar, docMainContainer width
+ * cap, and docItemCol 75% constraint. Below 997px those rules don't exist so
+ * no override is needed. The [class] attribute selector on each rule bumps
+ * specificity from (0,1,0) to (0,2,0), beating the hashed CSS-module class
+ * regardless of stylesheet load order.
+ */
+@media (min-width: 997px) {
+  /*
+   * Hide the sidebar (aside.theme-doc-sidebar-container) and the right TOC
+   * column (.col--3). Both are block-level at ≥997px; display:none is
+   * sufficient and overrides the theme's display:block.
+   */
+  .panzoom-expand-hidden[class] {
+    display: none !important;
+  }
+
+  /*
+   * Expand the main content container (main[class*="docMainContainer"]) to
+   * fill the full width vacated by the hidden sidebar.
+   */
+  .panzoom-expand-main[class] {
+    max-width: 100% !important;
+    flex-grow: 1 !important;
+  }
+
+  /*
+   * Expand the doc content column ([class*="docItemCol"]) from 75% to 95%
+   * within the now-full-width main container.
+   */
+  .panzoom-expand-doc-item[class] {
+    max-width: 95% !important;
+  }
+}
+
+/*
+ * Remove the infima .container max-width cap so the content fills the full
+ * available width. Infima defines two rules:
+ *   - base (no query) : max-width: var(--ifm-container-width)   → 1140px
+ *   - @media ≥1440px  : max-width: var(--ifm-container-width-xl) → 1320px
+ * Both use a single class selector (0,1,0) so [class] raises us to (0,2,0).
+ */
+.panzoom-expand-container[class] {
+  max-width: 100% !important;
+}
+
+@media (min-width: 1440px) {
+  .panzoom-expand-container[class] {
+    max-width: 100% !important;
+  }
+}
+
+/*
+ * Hide all content siblings of the panzoom container (headings, paragraphs,
+ * breadcrumbs, footer, paginator, etc.) so only the panzoom image is visible.
+ * Applied at every DOM level from the container up to <article>.
+ * No media-query scope needed — siblings exist at all viewport sizes.
+ */
+.panzoom-expand-sibling {
+  display: none !important;
+}

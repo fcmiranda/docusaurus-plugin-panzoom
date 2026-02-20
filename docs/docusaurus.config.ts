@@ -128,7 +128,7 @@ const config: Config = {
       toolbar: {
         enabled: true,
       },
-      expandDialog: {
+      expand: {
         enabled: true,
       },
     },
