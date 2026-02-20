@@ -80,8 +80,8 @@ themeConfig: {
       opacity: 0,
     },
 
-    // Expand feature: adds an expand button to the toolbar that hides the sidebar and TOC,
-    // expanding the main content area to near-full-width.
+    // Expand feature: adds an expand button to the toolbar that hides the sidebar, TOC,
+    // navbar, and site footer, expanding the diagram to near-full-width.
     // Requires toolbar.enabled: true
     expand: {
       // Whether to show the expand button in the toolbar.
@@ -98,8 +98,20 @@ themeConfig: {
 ## Expand Feature
 
 This fork adds an **in-page expand mode**: when `expand.enabled` is set to `true`, an expand button appears in the
-toolbar. Clicking it hides the sidebar and table-of-contents column and stretches the main content area to
-near-full-width, giving diagrams and SVGs much more space to pan and zoom without leaving the page.
+toolbar. Clicking it (or pressing `Escape` to exit) triggers the following behaviour:
+
+**On expand:**
+
+- Hides the sidebar, table-of-contents column, navbar, and site footer
+- Stretches the main content area to near-full-width
+- Scrolls to the top of the page so the diagram is immediately visible
+- The toolbar buttons become `position: fixed` so they stay on screen while panning/zooming
+
+**On collapse:**
+
+- Restores all hidden elements
+- Smoothly scrolls back to the diagram so you don't lose your place
+- The toolbar expand button icon resets correctly (including when closed via `Escape`)
 
 ```javascript
 themeConfig: {
@@ -116,8 +128,11 @@ themeConfig: {
 >
 > Changes introduced in this fork (`@fdevbr`):
 >
-> - **In-page expand mode**: adds an expand button that hides the sidebar and TOC and expands the diagram to
->   near-full-width inline, without opening a dialog.
+> - **In-page expand mode**: adds an expand button that hides the sidebar, TOC, navbar, and site footer and expands the
+>   diagram to near-full-width inline, without opening a dialog.
+> - **Fixed toolbar in expand mode**: toolbar buttons stay pinned to the viewport corner while panning.
+> - **Scroll to top on expand**: the page scrolls to the top when expand mode is activated.
+> - **Scroll back on collapse**: the page scrolls back to the diagram when expand mode is exited.
 >
 > If you don't need the expand feature, consider using
 > [@r74tech/docusaurus-plugin-panzoom](https://www.npmjs.com/package/@r74tech/docusaurus-plugin-panzoom) directly.
