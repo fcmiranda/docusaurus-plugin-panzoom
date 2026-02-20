@@ -1,5 +1,5 @@
 {
-  "name": "@mila/docusaurus-plugin-panzoom",
+  "name": "@fdevbr/docusaurus-plugin-panzoom",
   "version": "1.0.0",
   "description": "A plugin to enable the panzoom component on SVG and other elements",
   "main": "dist/index.js",
@@ -13,7 +13,7 @@
     "access": "public",
     "provenance": true
   },
-  "author": "mila",
+  "author": "fdevbr",
   "license": "MIT",
   "scripts": {
     "build": "tsc && npm run copy-assets",
@@ -78,7 +78,7 @@
         }
       ]
     ],
-    "repositoryUrl": "git@github.com:mila/docusaurus-plugin-panzoom.git",
+    "repositoryUrl": "git@github.com:fdevbr/docusaurus-plugin-panzoom.git",
     "branches": [
       {
         "name": "main",
@@ -92,7 +92,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mila/docusaurus-plugin-panzoom.git"
+    "url": "git+https://github.com/fdevbr/docusaurus-plugin-panzoom.git"
   },
   "sideEffects": false,
   "lint-staged": {
