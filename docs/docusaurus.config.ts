@@ -1,5 +1,5 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
+import { themes as prismThemes } from 'prism-react-renderer';
+import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
@@ -39,8 +39,7 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/r74tech/docusaurus-plugin-panzoom/tree/main/docs/',
+          editUrl: 'https://github.com/r74tech/docusaurus-plugin-panzoom/tree/main/docs/',
           routeBasePath: '/docs',
         },
         blog: false, // Disable the blog feature
@@ -51,9 +50,7 @@ const config: Config = {
     ],
   ],
 
-  plugins: [
-    '@r74tech/docusaurus-plugin-panzoom'
-  ],
+  plugins: ['@r74tech/docusaurus-plugin-panzoom'],
 
   themeConfig: {
     // Replace with your project's social card
@@ -123,12 +120,15 @@ const config: Config = {
         'div.mermaid[data-processed="true"]:not(.panzoom-exclude *)',
         'div.docusaurus-mermaid-container:not(.panzoom-exclude *)',
         '.drawio',
-        '.panzoom-example'
+        '.panzoom-example',
       ],
       wrap: true,
       timeout: 1000,
       excludeClass: 'panzoom-exclude',
       toolbar: {
+        enabled: true,
+      },
+      expandDialog: {
         enabled: true,
       },
     },
