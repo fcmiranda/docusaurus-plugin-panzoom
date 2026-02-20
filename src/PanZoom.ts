@@ -41,7 +41,7 @@ const createToolbar = (
   container: HTMLElement,
   instance: PanzoomObject,
   position: PanZoomPluginToolbarPosition,
-  expandToggle?: { open: () => void; close: () => void },
+  expandToggle?: { open: () => void; close: () => void; onClose?: () => void },
 ) => {
   const toolbar = document.createElement('div');
   toolbar.className = `panzoom-toolbar panzoom-toolbar-${position} ${excludeClass}`;
@@ -98,13 +98,20 @@ const createToolbar = (
     expandBtn.innerHTML = SvgZoomExpand;
     expandBtn.title = 'Expand';
     expandBtn.className = excludeClass;
+
+    // Register a reset callback so Escape key (and any programmatic close)
+    // also restores the button icon/title to the collapsed state.
+    expandToggle.onClose = () => {
+      expandBtn.innerHTML = SvgZoomExpand;
+      expandBtn.title = 'Expand';
+    };
+
     expandBtn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
       if (container.classList.contains('panzoom-expand-active')) {
         expandToggle.close();
-        expandBtn.innerHTML = SvgZoomExpand;
-        expandBtn.title = 'Expand';
+        // icon reset is handled by expandToggle.onClose above
       } else {
         expandToggle.open();
         expandBtn.innerHTML = SvgClose;
@@ -135,8 +142,9 @@ const createToolbar = (
  *   - Content col : [class*="docItemCol"]               (CSS-module element)
  *
  * @param container The wrapper element that holds the panzoom element
+ * @param onClose Optional callback invoked after the expand mode is closed (e.g. to reset button icon)
  */
-const createExpandToggle = (container: HTMLElement): { open: () => void; close: () => void } => {
+const createExpandToggle = (container: HTMLElement): { open: () => void; close: () => void; onClose?: () => void } => {
   const getLayoutElements = () => {
     const sidebar = document.querySelector<HTMLElement>('aside.theme-doc-sidebar-container');
     // The right TOC column is a direct child of the .row that also contains the docItemCol
@@ -199,6 +207,15 @@ const createExpandToggle = (container: HTMLElement): { open: () => void; close: 
 
     getSiblings().forEach((el) => el.classList.add('panzoom-expand-sibling'));
 
+    // Hide the Docusaurus navbar and site footer.
+    // The site footer uses the stable class `theme-layout-footer` (wrapping div)
+    // and the semantic <footer> element inside it. We target both to be safe.
+    const navbar = document.querySelector<HTMLElement>('.navbar');
+    if (navbar) navbar.classList.add('panzoom-expand-hidden');
+    document.querySelectorAll<HTMLElement>('footer, .theme-layout-footer').forEach((el) => {
+      el.classList.add('panzoom-expand-hidden');
+    });
+
     container.classList.add('panzoom-expand-active');
   };
 
@@ -215,7 +232,20 @@ const createExpandToggle = (container: HTMLElement): { open: () => void; close: 
       el.classList.remove('panzoom-expand-sibling');
     });
 
+    // Restore the navbar and site footer
+    const navbar = document.querySelector<HTMLElement>('.navbar');
+    if (navbar) navbar.classList.remove('panzoom-expand-hidden');
+    document.querySelectorAll<HTMLElement>('footer, .theme-layout-footer').forEach((el) => {
+      el.classList.remove('panzoom-expand-hidden');
+    });
+
     container.classList.remove('panzoom-expand-active');
+
+    // Scroll the exited element back into view
+    container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Notify caller (e.g. toolbar button) so it can reset its icon/title
+    result.onClose?.();
   };
 
   // Close on Escape
@@ -225,7 +255,8 @@ const createExpandToggle = (container: HTMLElement): { open: () => void; close: 
     }
   });
 
-  return { open, close };
+  const result: { open: () => void; close: () => void; onClose?: () => void } = { open, close };
+  return result;
 };
 
 /**

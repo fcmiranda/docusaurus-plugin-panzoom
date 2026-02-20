@@ -50,30 +50,52 @@
 /* ── Expand feature ──────────────────────────────────────────────────────── */
 
 /*
- * Active state on the panzoom wrapper so consumers can hook into it if needed.
+ * In expand mode the toolbar switches from absolute (relative to its container)
+ * to fixed (relative to the viewport) so the buttons remain visible while the
+ * user pans/zooms the full-screen diagram.
+ * Positional classes (top-right, top-left, etc.) continue to control placement.
  */
-.panzoom-expand-active {
-  position: relative;
+.panzoom-expand-active > .panzoom-toolbar {
+  position: fixed;
+  z-index: 9999;
+}
+
+.panzoom-expand-active > .panzoom-toolbar-top-right {
+  top: 10px;
+  right: 10px;
+}
+
+.panzoom-expand-active > .panzoom-toolbar-top-left {
+  top: 10px;
+  left: 10px;
+}
+
+.panzoom-expand-active > .panzoom-toolbar-bottom-right {
+  bottom: 10px;
+  right: 10px;
+}
+
+.panzoom-expand-active > .panzoom-toolbar-bottom-left {
+  bottom: 10px;
+  left: 10px;
 }
 
 /*
- * All layout overrides are scoped to @media (min-width: 997px) — the single
- * breakpoint where Docusaurus activates the sidebar, docMainContainer width
- * cap, and docItemCol 75% constraint. Below 997px those rules don't exist so
- * no override is needed. The [class] attribute selector on each rule bumps
- * specificity from (0,1,0) to (0,2,0), beating the hashed CSS-module class
- * regardless of stylesheet load order.
+ * Hide elements tagged with panzoom-expand-hidden at all viewport sizes.
+ * This covers the sidebar, TOC column, navbar, and footer.
+ * The [class] attribute selector bumps specificity from (0,1,0) to (0,2,0),
+ * beating any theme display:block regardless of stylesheet load order.
+ */
+.panzoom-expand-hidden[class] {
+  display: none !important;
+}
+
+/*
+ * Layout overrides scoped to @media (min-width: 997px) — the breakpoint where
+ * Docusaurus activates the docMainContainer width cap and docItemCol 75%
+ * constraint. Below 997px those rules don't exist so no override is needed.
  */
 @media (min-width: 997px) {
-  /*
-   * Hide the sidebar (aside.theme-doc-sidebar-container) and the right TOC
-   * column (.col--3). Both are block-level at ≥997px; display:none is
-   * sufficient and overrides the theme's display:block.
-   */
-  .panzoom-expand-hidden[class] {
-    display: none !important;
-  }
-
   /*
    * Expand the main content container (main[class*="docMainContainer"]) to
    * fill the full width vacated by the hidden sidebar.
