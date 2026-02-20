@@ -217,6 +217,9 @@ const createExpandToggle = (container: HTMLElement): { open: () => void; close: 
     });
 
     container.classList.add('panzoom-expand-active');
+
+    // Scroll to the top of the page so the expanded diagram is centered in view
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const close = () => {
