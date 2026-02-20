@@ -1,23 +1,23 @@
 # docusaurus-plugin-panzoom
 
-This plugin adds the ability to pan and zoom images and SVG images inside of a docusaurus website.  This is useful for embedding diagrams or
-complex mermaid.js renders around models and object schemas.  The normal theme doesn't scale tremendously well in a browser so some augmentation
-for complex diagrams is necessary.
+This plugin adds the ability to pan and zoom images and SVG images inside of a Docusaurus website. This is useful for
+embedding diagrams or complex mermaid.js renders around models and object schemas. The normal theme doesn't scale
+tremendously well in a browser so some augmentation for complex diagrams is necessary.
 
-This implements the excellent [@panzoom/panzoom](https://www.npmjs.com/package/@panzoom/panzoom) plugin 
+This implements the excellent [@panzoom/panzoom](https://www.npmjs.com/package/@panzoom/panzoom) plugin.
 
 ## Installation
 
 ```bash
-npm install @r74tech/docusaurus-plugin-panzoom
+npm install @fdevbr/docusaurus-plugin-panzoom
 ```
 
 ```javascript
 // In docusaurus.config.js
 // ...
-plugins: ['@r74tech/docusaurus-plugin-panzoom'],
+plugins: ['@fdevbr/docusaurus-plugin-panzoom'],
 // or
-plugins: [['@r74tech/docusaurus-plugin-panzoom', {} /* options */]],
+plugins: [['@fdevbr/docusaurus-plugin-panzoom', {} /* options */]],
 ```
 
 ## Configuration
@@ -32,33 +32,95 @@ themeConfig: {
     // A list of selectors to look for elements to enable pan and zoom
     // Default: ['div.mermaid[data-processed="true"]', 'div.docusaurus-mermaid-container', '.drawio']
     selectors: ['div.mermaid[data-processed="true"]', '.drawio'],
-    
+
     // Whether to wrap the panzoom items in a div with overflow:hidden
     // This constrains the pan zoom detail into the original container
     // Default: true
     wrap: true,
-    
+
     // The amount of time to wait in MS before the plugin client module tries to look for
-    // and alter pan zoom elements. Some renders take a little bit before they appear in the
-    // dom to find.
+    // and alter pan zoom elements. Some renders take a little bit before they appear in the dom.
     // Default: 1000
     timeout: 1000,
-    
-    // Add this class to any element within the Panzoom element that you want to exclude from Panzoom handling.
-    // That element's children will also be excluded. e.g. links and buttons that should not propagate the click event.
+
+    // Add this class to any element within the Panzoom element that you want to exclude from
+    // Panzoom handling. That element's children will also be excluded.
     // Default: 'panzoom-exclude'
     excludeClass: 'panzoom-exclude',
-    
+
+    // Whether to enable zooming with the mouse wheel.
+    // Default: true
+    enableWheelZoom: true,
+
+    // Whether to enable zooming with the mouse wheel while holding the shift key.
+    // Works independently of enableWheelZoom.
+    // Default: false
+    enableWheelZoomWithShift: false,
+
+    // Whether to enable double-click to reset zoom.
+    // Default: true
+    enableDoubleClickResetZoom: true,
+
+    // Whether to restrict zooming out beyond the original size of the element.
+    // Default: false
+    restrictZoomOutBeyondOrigin: false,
+
+    // Toolbar options: shows zoom in, zoom out, and reset buttons.
+    toolbar: {
+      // Whether to show the toolbar.
+      // Default: false
+      enabled: false,
+
+      // Toolbar position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
+      // Default: 'top-right'
+      position: 'top-right',
+
+      // Toolbar opacity when not hovered (0 to 1). Becomes fully opaque on hover.
+      // Default: 0
+      opacity: 0,
+    },
+
+    // Expand feature: adds an expand button to the toolbar that hides the sidebar and TOC,
+    // expanding the main content area to near-full-width.
+    // Requires toolbar.enabled: true
+    expand: {
+      // Whether to show the expand button in the toolbar.
+      // Default: false
+      enabled: false,
+    },
+
     // You can also pass any options supported by @panzoom/panzoom
     // See: https://github.com/timmywil/panzoom for available options
   }
 }
 ```
 
-> [!NOTE]
-> This package is a fork of [act-org/docusaurus-plugin-panzoom](https://github.com/act-org/docusaurus-plugin-panzoom) under the MIT license. It was forked because the original package was not being actively maintained.
+## Expand Feature
+
+This fork adds an **in-page expand mode**: when `expand.enabled` is set to `true`, an expand button appears in the
+toolbar. Clicking it hides the sidebar and table-of-contents column and stretches the main content area to
+near-full-width, giving diagrams and SVGs much more space to pan and zoom without leaving the page.
+
+```javascript
+themeConfig: {
+  zoom: {
+    toolbar: { enabled: true },
+    expand: { enabled: true },
+  }
+}
+```
+
+> [!NOTE] This package is a fork of
+> [@r74tech/docusaurus-plugin-panzoom](https://github.com/r74tech/docusaurus-plugin-panzoom), which itself is a fork of
+> [act-org/docusaurus-plugin-panzoom](https://github.com/act-org/docusaurus-plugin-panzoom), under the MIT license.
 >
-> If the original package is updated and maintained again, we recommend migrating back to the original package. This fork will continue to be maintained until then.
+> Changes introduced in this fork (`@fdevbr`):
+>
+> - **In-page expand mode**: adds an expand button that hides the sidebar and TOC and expands the diagram to
+>   near-full-width inline, without opening a dialog.
+>
+> If you don't need the expand feature, consider using
+> [@r74tech/docusaurus-plugin-panzoom](https://www.npmjs.com/package/@r74tech/docusaurus-plugin-panzoom) directly.
 
 ## License
 
